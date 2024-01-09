@@ -12,14 +12,49 @@ const dataWindDirection = document.getElementById('data_wind_direction');
 const dataSunrise = document.getElementById('data_sunrise');
 const dataSunset = document.getElementById('data_sunset');
 
-let latitude;
-let longitude;
-
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        return latitude, longitude;
+        const { latitude, longitude } = position.coords;
+        const getWeather = async function () {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
+
+            const response = await fetch(url);
+            const result = await response.json();
+            return result;
+        }
+
+        const loadSite = async function () {
+            const data = await getWeather();
+            console.log(data);
+            switch (data.weather[0].main) {
+                case "Rain":
+                    document.body.style.backgroundImage = "url('./img/rainy.jpg')";
+                    break;
+                case "Clouds":
+                    document.body.style.backgroundImage = "url('./img/cloudy.jpg')";
+                    break;
+                case "Clear":
+                    document.body.style.backgroundImage = "url('./img/clear.jpg')";
+                    break;
+                default:
+                    document.body.style.backgroundImage = "url('./img/fair.jpg')";
+                    break;
+            }
+
+            temperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
+            description.innerHTML = data.weather[0].description;
+            loc.innerHTML = data.name;
+            dataCity.innerHTML = data.name;
+            dataTemperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
+            dataHumidity.innerHTML = data.main.humidity + "%";
+            dataPressure.innerHTML = data.main.pressure + "hPa";
+            dataWindSpeed.innerHTML = data.wind.speed + "m/s";
+            dataWindDirection.innerHTML = data.wind.deg + "º";
+            dataSunrise.innerHTML = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+            dataSunset.innerHTML = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+        }
+        loadSite();
+
     }, (error) => {
         switch (error.code) {
             case error.PERMISSION_DENIED:
@@ -37,45 +72,3 @@ if (navigator.geolocation) {
         }
     })
 };
-const getWeather = async function () {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
-
-    const response = await fetch(url);
-    const result = await response.json();
-    return result;
-}
-
-const loadSite = async function () {
-    const data = await getWeather();
-    console.log(data);
-    switch (data.weather[0].main) {
-        case "Rain":
-            document.body.style.backgroundImage = "url('./img/rainy.jpg')";
-            break;
-        case "Clouds":
-            document.body.style.backgroundImage = "url('./img/cloudy.jpg')";
-            break;
-        case "Clear":
-            document.body.style.backgroundImage = "url('./img/clear.jpg')";
-            break;
-        default:
-            document.body.style.backgroundImage = "url('./img/fair.jpg')";
-            break;
-    }
-
-    temperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
-    description.innerHTML = data.weather[0].description;
-    loc.innerHTML = data.name;
-    dataCity.innerHTML = data.name;
-    dataTemperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
-    dataHumidity.innerHTML = data.main.humidity + "%";
-    dataPressure.innerHTML = data.main.pressure + "hPa";
-    dataWindSpeed.innerHTML = data.wind.speed + "m/s";
-    dataWindDirection.innerHTML = data.wind.deg + "º";
-    dataSunrise.innerHTML = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
-    dataSunset.innerHTML = new Date(data.sys.sunset * 1000).toLocaleTimeString();
-}
-
-
-
-
