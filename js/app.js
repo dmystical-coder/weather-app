@@ -12,8 +12,8 @@ const dataWindDirection = document.getElementById('data_wind_direction');
 const dataSunrise = document.getElementById('data_sunrise');
 const dataSunset = document.getElementById('data_sunset');
 
-let latitude = 48.8583701;
-let longitude = 2.2944813;
+let latitude;
+let longitude;
 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
