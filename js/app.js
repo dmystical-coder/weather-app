@@ -12,14 +12,29 @@ const dataWindDirection = document.getElementById('data_wind_direction');
 const dataSunrise = document.getElementById('data_sunrise');
 const dataSunset = document.getElementById('data_sunset');
 
-let latitude;
-let longitude;
+let latitude = 48.8583701;
+let longitude = 2.2944813;
 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
         return latitude, longitude;
+    }, (error) => {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
     })
 };
 const getWeather = async function () {
