@@ -12,9 +12,16 @@ const dataWindDirection = document.getElementById('data_wind_direction');
 const dataSunrise = document.getElementById('data_sunrise');
 const dataSunset = document.getElementById('data_sunset');
 
-let latitude = 6.471446;
-let longitude = 3.202919;
+let latitude;
+let longitude;
 
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        return latitude, longitude;
+    })
+};
 const getWeather = async function () {
     const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
 
@@ -24,12 +31,6 @@ const getWeather = async function () {
 }
 
 const loadSite = async function () {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-        })
-    }
     const data = await getWeather();
     console.log(data);
     switch (data.weather[0].main) {
