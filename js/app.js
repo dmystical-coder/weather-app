@@ -38,7 +38,7 @@ if (navigator.geolocation) {
     })
 };
 const getWeather = async function () {
-    const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
 
     const response = await fetch(url);
     const result = await response.json();
