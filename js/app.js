@@ -16,7 +16,7 @@ if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         const getWeather = async function () {
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6893e2d9c07f0e7cd079d2def1ff7f38`;
+            const url = `http://api.weatherapi.com/v1/current.json?key=3c8a93ed796d42069db214830241001&q=${latitude} ${longitude}&aqi=no`;
 
             const response = await fetch(url);
             const result = await response.json();
