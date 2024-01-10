@@ -26,32 +26,6 @@ if (navigator.geolocation) {
         const loadSite = async function () {
             const data = await getWeather();
             console.log(data);
-            switch (data.weather[0].main) {
-                case "Rain":
-                    document.body.style.backgroundImage = "url('./img/rainy.jpg')";
-                    break;
-                case "Clouds":
-                    document.body.style.backgroundImage = "url('./img/cloudy.jpg')";
-                    break;
-                case "Clear":
-                    document.body.style.backgroundImage = "url('./img/clear.jpg')";
-                    break;
-                default:
-                    document.body.style.backgroundImage = "url('./img/fair.jpg')";
-                    break;
-            }
-
-            temperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
-            description.innerHTML = data.weather[0].description;
-            loc.innerHTML = data.name;
-            dataCity.innerHTML = data.name;
-            dataTemperature.innerHTML = Math.round((data.main.temp - 273.15) * 10) / 10 + "°C";
-            dataHumidity.innerHTML = data.main.humidity + "%";
-            dataPressure.innerHTML = data.main.pressure + "hPa";
-            dataWindSpeed.innerHTML = data.wind.speed + "m/s";
-            dataWindDirection.innerHTML = data.wind.deg + "º";
-            dataSunrise.innerHTML = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
-            dataSunset.innerHTML = new Date(data.sys.sunset * 1000).toLocaleTimeString();
         }
         loadSite();
 
